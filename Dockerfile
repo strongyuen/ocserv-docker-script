@@ -1,5 +1,5 @@
-FROM ubuntu:trusty
-MAINTAINER Wyatt Pan <wppurking@gmail.com>
+FROM ubuntu
+MAINTAINER Wing YUEN <wing.wk.yuen@gmail.com>
 
 ADD ./certs /opt/certs
 ADD ./bin /usr/local/bin
@@ -8,14 +8,14 @@ RUN chmod a+x /usr/local/bin/*
 WORKDIR /etc/ocserv
 
 # china timezone
-RUN echo "Asia/Shanghai" > /etc/timezone
+RUN echo "Asia/HongKong" > /etc/timezone
 
 # install compiler, dependencies, tools , dnsmasq
 RUN apt-get update && apt-get install -y \
-    build-essential wget xz-utils libgnutls28-dev \
+    ipcalc build-essential wget xz-utils libgnutls28-dev \
     libev-dev libwrap0-dev libpam0g-dev libseccomp-dev libreadline-dev \
     libnl-route-3-dev libkrb5-dev liboath-dev libtalloc-dev \
-    libhttp-parser-dev libpcl1-dev libopts25-dev autogen pkg-config nettle-dev \
+    libhttp-parser-dev libopts25-dev autogen pkg-config nettle-dev \
     gnutls-bin gperf liblockfile-bin nuttcp lcov iptables unzip dnsmasq \
     && rm -rf /var/lib/apt/lists/*
 
@@ -41,8 +41,8 @@ RUN mkdir -p /temp && cd /temp \
 
 # configuration ocserv
 RUN mkdir -p /temp && cd /temp \
-    && wget https://ocserv.gitlab.io/www/download.html \
-    && export ocserv_version=$(cat download.html | grep -o '[0-9]*\.[0-9]*\.[0-9]*') \
+    && wget https://ocserv.openconnect-vpn.net/download \
+    && export ocserv_version=$(cat download | grep -o 'Latest version is [0-9]*\.[0-9]*\.[0-9]*' | grep -o '[0-9]*\.[0-9]*\.[0-9]*') \
     && wget ftp://ftp.infradead.org/pub/ocserv/ocserv-$ocserv_version.tar.xz \
     && tar xvf ocserv-$ocserv_version.tar.xz \
     && cd ocserv-$ocserv_version \
